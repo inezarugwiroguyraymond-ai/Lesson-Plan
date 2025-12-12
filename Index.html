@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <title>Lesson Plan Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2196F3;
+            --accent: #FF9800;
+            --dark: #2E7D32;
+            --light: #E8F5E9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .logo i {
+            font-size: 60px;
+            color: var(--primary);
+        }
+        
+        h1 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .app-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .app-info {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: var(--light);
+            border-radius: 10px;
+        }
+        
+        .info-item i {
+            color: var(--primary);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 24px;
+        }
+        
+        .btn-launch {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-launch:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-launch i {
+            font-size: 1.4rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .feature i {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .feature h3 {
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .install-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pwa-benefits {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 2px solid var(--light);
+        }
+        
+        .benefit {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .benefit i {
+            color: var(--primary);
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 600px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .app-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h1>Lesson Plan Library</h1>
+            <p class="subtitle">Professional lesson planning made simple</p>
+        </div>
+        
+        <div class="app-card">
+            <div class="app-info">
+                <div class="info-item">
+                    <i class="fas fa-user-check"></i>
+                    <div>
+                        <strong>Secure Login</strong><br>
+                        Uses your Google account
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-database"></i>
+                    <div>
+                        <strong>Your Data</strong><br>
+                        Stored in your Google Drive
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-robot"></i>
+                    <div>
+                        <strong>AI Assistant</strong><br>
+                        Generate plans with AI tags
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-launch" id="launchBtn">
+                <i class="fas fa-rocket"></i>
+                Launch Lesson Planner
+            </button>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-file-pdf"></i>
+                <h3>PDF Export</h3>
+            </div>
+            <div class="feature">
+                <i class="fas fa-school"></i>
+                <h3>School Management</h3>
+            </div>
+            <div class="feature">
+                <i class="fas fa-chart-line"></i>
+                <h3>Progress Tracking</h3>
+            </div>
+            <div class="feature">
+                <i class="fas fa-sync-alt"></i>
+                <h3>Auto Sync</h3>
+            </div>
+        </div>
+        
+        <div class="pwa-benefits">
+            <h3 style="color: var(--dark); margin-bottom: 15px;">
+                <i class="fas fa-mobile-alt"></i> App Benefits
+            </h3>
+            <div class="benefit">
+                <i class="fas fa-download"></i>
+                <span>Install on home screen</span>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-bolt"></i>
+                <span>Fast loading</span>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-wifi"></i>
+                <span>Works offline</span>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-bell"></i>
+                <span>Push notifications</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="install-prompt" id="installPrompt">
+        <strong>Install Lesson Plan Library?</strong>
+        <p>Add to home screen for quick access</p>
+        <button class="install-btn" id="installBtn">
+            <i class="fas fa-plus-circle"></i>
+            Install App
+        </button>
+        <button id="cancelInstall" style="background: none; border: none; color: #666; margin-top: 10px; cursor: pointer;">
+            Not now
+        </button>
+    </div>
+    
+    <script>
+        // Your Apps Script Web App URL
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiPQcknjqVERBazlvfKyRooxTxCUSo4zPNHx611qvs/dev';
+        
+        // Launch the Apps Script app
+        document.getElementById('launchBtn').addEventListener('click', function() {
+            // Store launch time for return detection
+            localStorage.setItem('lastLaunch', Date.now());
+            
+            // Open in new window with minimal browser UI
+            const features = 'width=1200,height=800,location=no,menubar=no,toolbar=no,status=no';
+            window.open(APPS_SCRIPT_URL, '_blank', features);
+            
+            // Optional: Close PWA after opening (for mobile)
+            if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
+                // Don't close immediately, allow user to return
+            }
+        });
+        
+        // PWA Installation
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt after 3 seconds
+            setTimeout(() => {
+                if (deferredPrompt) {
+                    document.getElementById('installPrompt').style.display = 'block';
+                }
+            }, 3000);
+        });
+        
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('User installed the PWA');
+                document.getElementById('installPrompt').style.display = 'none';
+            }
+            
+            deferredPrompt = null;
+        });
+        
+        document.getElementById('cancelInstall').addEventListener('click', () => {
+            document.getElementById('installPrompt').style.display = 'none';
+        });
+        
+        // Service Worker for offline capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('SW registration failed:', error);
+                    });
+            });
+        }
+        
+        // Check if returning from Apps Script
+        window.addEventListener('pageshow', (event) => {
+            const lastLaunch = localStorage.getItem('lastLaunch');
+            if (lastLaunch && Date.now() - lastLaunch < 5000) {
+                // User just launched the app, show welcome back message
+                console.log('Welcome back from Lesson Planner');
+                localStorage.removeItem('lastLaunch');
+            }
+        });
+        
+        // Check authentication status
+        function checkAuth() {
+            // Try to access Apps Script to see if user is logged in
+            fetch(APPS_SCRIPT_URL, { method: 'HEAD', mode: 'no-cors' })
+                .then(() => {
+                    // If we can reach it, user might be logged in
+                    console.log('Apps Script accessible');
+                })
+                .catch(() => {
+                    // Might need authentication
+                    console.log('Authentication may be required');
+                });
+        }
+        
+        // Initial check
+        checkAuth();
+    </script>
+</body>
+</html>
